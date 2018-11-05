@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhiyou.mybatis.mapper.User">
+	<insert id="doCreate" parameterType="com.zhiyou.mybatis.vo.User">
+	INSERT INTO t_user(u_id,u_name,u_sex,u_pwd)
+	VALUES(#{u_id},#{u_name},#{u_sex},#{u_pwd});
+	</insert>
+	
+	<update id="doUpdate" parameterType="com.zhiyou.mybatis.vo.User">
+	UPDATE t_user SET u_name=#{u_name},u_sex=#{u_sex},u_pwd=#{u_pwd} WHERE u_id=#{u_id};
+	</update>
+	
+	<select id="findById" parameterType="java.lang.Integer" resultType="com.zhiyou.mybatis.vo.User">
+	SELECT u_id,u_sex,u_name,u_pwd FROM t_user WHERE u_id=#{u_id};
+	
+	</select>
+	
+	<select id="findAll" resultType="com.zhiyou.mybatis.vo.User">
+	SELECT u_id,u_sex,u_name,u_pwd FROM t_user;
+	</select>
+	
+	<select id="findAllCount" resultType="java.lang.Long">
+	SELECT COUNT(0) FROM t_user;
+	</select>
+	
+	<select id="findAllSplit" parameterType="java.util.Map" resultType="com.zhiyou.mybatis.vo.User">
+	SELECT u_id,u_sex,u_name,u_pwd FROM t_user WHERE ${column} LIKE #{keyword} LIMIT #{start},#{lineSize};
+	</select>
+
+	<select id="getAllCountSplit" parameterType="java.util.Map" resultType="java.lang.Long">
+	SELECT COUNT(0) FROM t_user WHERE ${column} LIKE #{keyword};
+	</select>
+	
+	<delete id="doRemove" parameterType="java.lang.String">
+	DELETE FROM t_user WHERE u_id=#{u_id};
+	</delete>
+	
+	<delete id="doRemoveBatch" parameterType="java.lang.String">
+		DELETE FROM t_user WHERE u_id IN
+		<foreach item="ele" collection="array"
+			open="(" separator="," close=")">
+			#{ele}
+		</foreach>
+	</delete>
+	
+
+</mapper>
